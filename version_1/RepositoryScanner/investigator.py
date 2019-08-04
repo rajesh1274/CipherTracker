@@ -14,14 +14,15 @@ def RepositoryInvestigator(keyword,per_page=30):
 
 def CBIRepositoryInvestigator(keyword):
     repos = []
+    repo_count = None
     page_no = 1
-    total_page = 100
 
     while True:
         res = requests.get(
-            f"https://api.github.com/search/repositories?q={keyword}&sort=updated&order=desc&page={page_no}&per_page={total_page}").json()
+            f"https://api.github.com/search/repositories?q={keyword}&sort=updated&order=desc&page={page_no}&per_page=100").json()
         repo_items = res.get("items")
-        repo_count = res.get("total_count")
+        if page_no == 1:
+            repo_count = res.get("total_count")
         if not repo_items:
             break
         else:

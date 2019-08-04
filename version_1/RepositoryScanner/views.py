@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-from RepositoryScanner.investigator import RepositoryInvestigator
+from RepositoryScanner.investigator import RepositoryInvestigator,CBIRepositoryInvestigator
 import requests
 
 # Create your views here.
@@ -27,11 +27,14 @@ class KeywordBasedInvestigation(APIView):
 
 
 
-class ListBasedInvestigation(APIView):
+class KeywordBasedCBIInvestigation(APIView):
     def post(self,request):
         try:
             data = JSONParser().parse(request)
-            key_list = data["key_list"]
+            keyword = data["keyword"]
+            response = CBIRepositoryInvestigator(keyword=keyword)
+            statusCode = 200
+            content = response['json_response']
         except:
             statusCode = 444
             content = {"ErrorCode" : 444,
